@@ -24,10 +24,12 @@ public class AccountModel implements Serializable{
 	@Length(min = 5, max = 50, message = "Phai co tu 5 - 50 ky tu")
 	private String username;
 	
+	@NotBlank(message = "Khong duoc de trong")
 	private String password;
 	
 	private String fullname;
 	
+	@NotBlank(message = "Khong duoc de trong")
 	private String email;
 	
 	private MultipartFile photo;

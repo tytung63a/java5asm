@@ -50,6 +50,11 @@
 				</div>
 				
 				<div class="mt-3">
+					<label class="form-label">Category_ID</label>
+					<form:select class="form-select" path="category" items="${listCategory}"/>
+				</div>
+				
+				<div class="mt-3">
 					<button type="submit" class="btn btn-primary mb-3">Submit
 					</button>
 				</div>

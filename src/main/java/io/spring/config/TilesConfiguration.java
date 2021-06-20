@@ -31,8 +31,6 @@ public class TilesConfiguration {
 	@Bean
 	public JavaMailSender getJavaMailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		
-		//Use gmail
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setPort(587);
 		mailSender.setUsername("maihuongtungson@gmail.com");

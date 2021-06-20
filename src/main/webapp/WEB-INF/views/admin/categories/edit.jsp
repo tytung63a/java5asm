@@ -17,8 +17,8 @@
 				
 				<div class="mt-3">
 					<label class="form-label">ID</label>
-					<form:input type="text" class="form-control" path="id"/>
-					<span><form:errors path="id" cssClass="error" /></span>
+					<input type="text" disabled="disabled" class="form-control" value="${categoryForm.id }" name="id"/>
+					
 				</div>
 				
 				<div class="mt-3">

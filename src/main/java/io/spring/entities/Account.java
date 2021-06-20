@@ -28,10 +28,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "accounts")
 public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
+	@NotBlank(message = "Khong duoc de trong")
+	@Length(min = 5, max = 50, message = "Phai co tu 5 - 50 ky tu")
 	@Id
 	private String username;
 
+	@NotBlank(message = "Khong duoc de trong")
+	@Length(min = 5, max = 50, message = "Phai co tu 5 - 50 ky tu")
 	@Column
 	private String password;
 	

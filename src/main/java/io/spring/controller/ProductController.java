@@ -2,7 +2,6 @@ package io.spring.controller;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -25,44 +24,57 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import antlr.collections.List;
 import io.spring.entities.Product;
 import io.spring.model.ProductModel;
+import io.spring.service.CategoryService;
 import io.spring.service.ProductService;
 
 @Controller
 @RequestMapping("/admin")
 public class ProductController {
-	
+
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private CategoryService categoryService;
+
 	@Autowired
 	private ServletContext application;
-	
+
 	@GetMapping("/products")
-	public String getAll(@RequestParam(value="name", required = false) String name, Model model){
+	public String getAll(@RequestParam(value = "name", required = false) String name, Model model) {
 		model.addAttribute("list", productService.findAll());
 		return "productsAdminList";
 	}
-	
-	 @ModelAttribute("listAvailable")
-	   public Map<Integer, String> getListAvailable() {
-		 Map<Integer, String> listAvailable = new HashMap<Integer, String>();
-			listAvailable.put(1, "Yes");
-			listAvailable.put(0, "No");
-	      return listAvailable;
-	   }
-	
+
+	@ModelAttribute("listAvailable")
+	public Map<Integer, String> getListAvailable() {
+		Map<Integer, String> listAvailable = new HashMap<Integer, String>();
+		listAvailable.put(1, "Yes");
+		listAvailable.put(0, "No");
+		return listAvailable;
+	}
+
+	@ModelAttribute("listCategory")
+	public Map<Integer, String> getListCategory() {
+		Map<Integer, String> listCategory = new HashMap<Integer, String>();
+		for (int i = 0; i < categoryService.findAll().size(); i++) {
+			listCategory.put(categoryService.findAll().get(i).getId(), categoryService.findAll().get(i).getName());
+		}
+		return listCategory;
+	}
+
 	@GetMapping("/products/create")
-	public String viewCreate(Model model){
+	public String viewCreate(Model model) {
 		model.addAttribute("productForm", new ProductModel());
 		return "productsAdminCreate";
-	} 
-	
+	}
+
 	@PostMapping("/products/create")
 	public String saveProduct(@Validated @ModelAttribute("productForm") ProductModel productModel,
-			@Parameter(name = "image") MultipartFile multipartFile,
-			BindingResult bindingResult, Model model) throws IllegalAccessException, InvocationTargetException{
+			BindingResult bindingResult, @Parameter(name = "image") MultipartFile multipartFile, Model model)
+			throws IllegalAccessException, InvocationTargetException {
 		boolean check = bindingResult.hasErrors();
 		String path = application.getRealPath("/");
 		try {
@@ -71,49 +83,56 @@ public class ProductController {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		if(!check) {
+		if (!check) {
 			Product product = new Product();
 			BeanUtils.copyProperties(product, productModel);
 			product.setImage(productModel.getImage().getOriginalFilename());
 			productService.save(product);
 			model.addAttribute("message", "Save product is successfuly");
-			//3. else   = => Show error message
 			return "redirect:/admin/products";
 		} else {
-			//3. else   = => Show error message
+			// 3. else = => Show error message
 			return "productsAdminCreate";
 		}
-	} 
-	
+	}
+
 	@GetMapping("/products/edit/{id}")
 	public String editView(@PathVariable("id") Integer id, Model model) {
 		Optional<Product> product = productService.findById(id);
-		model.addAttribute("productForm", product.get());
+		model.addAttribute("productForm", product);
+		model.addAttribute("idValue", product.get().getCategory().getId());
 		return "productsAdminEdit";
-	} 
-	
-	@PostMapping("/products/edit")
-	public String updateProduct(@Validated @ModelAttribute("productForm") Product product, BindingResult bindingResult, Model model){
-		//1. Validate Product
-		boolean check = bindingResult.hasErrors();
-		
-		//2. if (validate ok) => save ok => Show message success
-		if(!check) {
-			//TODO save product
+	}
+
+	@PostMapping("/products/edit/{id}")
+	public String editAccount(@Validated @ModelAttribute("productForm") ProductModel productModel,
+			BindingResult bindingResult, @Parameter(name = "photo") MultipartFile photo, RedirectAttributes rAttributes,
+			Model model) throws IllegalAccessException, InvocationTargetException {
+		String path = application.getRealPath("/");
+		try {
+			String filePath = path + "/images/" + productModel.getImage().getOriginalFilename();
+			productModel.getImage().transferTo(Paths.get(filePath));
+		} catch (Exception e) {
+			System.err.println("có lỗi tại trycath");
+		}
+
+		if (!bindingResult.hasErrors()) {
+			Product product = new Product();
+			BeanUtils.copyProperties(product, productModel);
+			product.setImage(productModel.getImage().getOriginalFilename());
+			rAttributes.addFlashAttribute("message",
+					"Edit Product is successfuly with username : " + productModel.getId());
 			productService.save(product);
-			model.addAttribute("message", "Save product is successfuly");
-			//3. else   = => Show error message
 			return "redirect:/admin/products";
 		} else {
-			//3. else   = => Show error message
-			return "admin/products/edit";
+			return "productsAdminEdit";
 		}
-	} 
-	
+	}
+
 	@GetMapping("/products/delete/{id}")
-	public String delete(@PathVariable("id") Integer id, Model model , RedirectAttributes rAttributes){
+	public String delete(@PathVariable("id") Integer id, Model model, RedirectAttributes rAttributes) {
 		productService.deleteById(id);
 		rAttributes.addFlashAttribute("message", "Delete product is successfuly with id: " + id);
 		return "redirect:/admin/products";
-	} 
+	}
 }

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <style>
@@ -11,15 +11,15 @@
 	<div class="col-12">
 		<div class="col-6 offset-3">
 			<form:form method="post"
-				action="${pageContext.request.contextPath}/admin/products/create"
+				action="${pageContext.request.contextPath}/admin/products/edit/${idValue }"
 				enctype="multipart/form-data" modelAttribute="productForm">
 				<div class="mt-3">
 					Form Edit Product
 				</div>
 				<div class="mt-3">
 					<label class="form-label">ID</label>
-					<form:input disabled type="text" class="form-control" path="id" />
-					<span><form:errors path="id" cssClass="error" /></span>
+					<input type="text" class="form-control" disabled="disabled" value="${idValue }" name="id" />
+					
 				</div>
 				<div class="mt-3">
 					<label class="form-label">Name</label>
@@ -53,6 +53,17 @@
 					<label class="form-label">Available</label>
 					<form:select class="form-select" path="available" items="${listAvailable}"/>
 				</div>
+				
+				<%-- <div class="mt-3">
+					<label class="form-label">Category_ID</label>
+					<form:select class="form-select" path="category" items="${listCategory1}"/>
+				</div> --%>
+				
+				  <div class="mt-3">
+					<label class="form-label">Category_ID (Nhập Thủ Công))</label>
+					<input type="text" class="form-control" name="category" value="${idValue} " />
+					
+				</div> 
 				
 				<div class="mt-3">
 					<button type="submit" class="btn btn-primary mb-3">Submit

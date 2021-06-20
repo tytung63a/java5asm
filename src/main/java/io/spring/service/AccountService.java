@@ -3,32 +3,22 @@ package io.spring.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.validation.Valid;
 
 import io.spring.entities.Account;
-import io.spring.repository.AccountRepository;
 
-@Service
-public class AccountService {
-	@Autowired
-	private AccountRepository accountRepository;
+public interface AccountService {
 
-	public Account save(Account entity) { 		
-		return accountRepository.save(entity);
-	}
+	void deleteById(String id);
 
-	public List<Account> findAll() {
-		return accountRepository.findAll();
-	}
+	Optional<Account> findById(String id);
 
-	public Optional<Account> findById(String id) {
-		return accountRepository.findById(id);
-	}
+	List<Account> findAll();
 
-	public void deleteById(String id) {
-		accountRepository.deleteById(id);
-	}
-	
+	<S extends Account> S save(S entity);
+
+	boolean checkLogin(@Valid Account account);
+
+	boolean existsById(String id);
 	
 }

@@ -25,8 +25,8 @@
 	          <a class="btn btn-light" data-mdb-ripple-color="dark" href="${pageContext.request.contextPath}/admin/accounts">Tài Khoản</a>
 	          &ensp;
 	        </li>
-	        <li class="nav-item" alige>
-	          <a href="/asmjava/logout" class="btn btn-light" data-mdb-ripple-color="dark" >Logout</a>
+	        <li class="nav-item">
+	          <a href="/login" class="btn btn-light" data-mdb-ripple-color="dark" >Đăng Xuất</a>
 	        </li>
 	        
 	      </ul>

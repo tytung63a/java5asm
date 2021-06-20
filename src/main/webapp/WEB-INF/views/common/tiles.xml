@@ -5,7 +5,7 @@
 
 <tiles-definitions>
 
- <definition name="base.definition.admin" template="/WEB-INF/views/common/classic_admin.jsp">
+ 	<definition name="base.definition.admin" template="/WEB-INF/views/common/classic_admin.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="menu" value="/WEB-INF/views/common/_menu_admin.jsp" />
 		<put-attribute name="body" value="" />
@@ -21,13 +21,13 @@
 	</definition>
 	
 	<definition name="productsAdminCreate" extends="base.definition.admin">
-		<put-attribute name="title" value="Product Create ..." />
+		<put-attribute name="title" value="Product Create" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/admin/products/create.jsp" />
 	</definition>
 	
 	<definition name="productsAdminEdit" extends="base.definition.admin">
-		<put-attribute name="title" value="Product Edit ..." />
+		<put-attribute name="title" value="Product Edit" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/admin/products/edit.jsp" />
 	</definition>
@@ -41,13 +41,47 @@
 	</definition>
 	
 	<definition name="categoriesAdminCreate" extends="base.definition.admin">
-		<put-attribute name="title" value="Category List" />
+		<put-attribute name="title" value="Category Create" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/categories/create.jsp" />
 	</definition>
 	
 	<definition name="categoriesAdminEdit" extends="base.definition.admin">
-		<put-attribute name="title" value="Category List" />
+		<put-attribute name="title" value="Category Edit" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/categories/edit.jsp" />
+	</definition>
+	
+	
+	
+	
+	<definition name="accountsAdminList" extends="base.definition.admin">
+		<put-attribute name="title" value="Account List" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/accounts/list.jsp" />
+	</definition>
+	
+	<definition name="accountsAdminCreate" extends="base.definition.admin">
+		<put-attribute name="title" value="Accounts Create" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/accounts/create.jsp" />
+	</definition>
+	
+	<definition name="accountsAdminEdit" extends="base.definition.admin">
+		<put-attribute name="title" value="Accounts Edit" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/accounts/edit.jsp" />
+	</definition>
+	
+	
+	
+	
+	 <definition name="base.definition.user" template="/WEB-INF/views/common/classic_user.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/common/_header_user.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/views/common/_menu_user.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/common/_footer_user.jsp" />
+	</definition>
+   
+   <definition name="homePageUser" extends="base.definition.user">
+		<put-attribute name="title" value="Homepage" />
+		<put-attribute name="body" value="/WEB-INF/views/products/list.jsp" />
 	</definition>
    
 </tiles-definitions>
