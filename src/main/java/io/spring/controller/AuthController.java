@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.spring.entities.Account;
 import io.spring.service.AccountService;
@@ -31,25 +32,22 @@ public class AuthController {
 		model.addAttribute("account", new Account());
 		return "login";
 	}
-	
-	@GetMapping(value = {"/homepage"})
-	public String homePage(Model model){
-		return "homePageUser";
-	}
+
 	
 	@PostMapping(value = {"/login"})
-	public String checkLogin(@Validated @ModelAttribute("account") Account account, BindingResult bindingResult ,HttpSession httpSession) throws IllegalAccessException, InvocationTargetException{
+	public String checkLogin(@Validated @ModelAttribute("account") Account account, BindingResult bindingResult,
+			RedirectAttributes rAttributes ,HttpSession httpSession) throws IllegalAccessException, InvocationTargetException{
+		if (bindingResult.hasErrors()) {
+			return "login";
+		}
 		try {
 			Optional<Account> accountData = accountService.findById(account.getUsername());  //lấy username bên form để tìm trong database
-			System.err.println("user silent : " + account.getUsername());
-			System.err.println("pass silent : " + account.getPassword());
-			System.err.println("pass data : " + accountData.get().getPassword());
-			System.err.println("admin is : " + accountData.get().getAdmin().toString());
 
 			if(!bindingResult.hasErrors() && account.getPassword().equals(accountData.get().getPassword()) && 
 					accountData.get().getAdmin() == true) { 						//so sánh bên pass bên form v
 				Account account2 = new Account();
 				BeanUtils.copyProperties(account2, accountData);
+				rAttributes.addFlashAttribute("message", "Đăng nhập thành công");
 				httpSession.setAttribute(Const.USER_LOGGED, account2);
 				return "redirect:/admin/accounts";
 			}
@@ -63,12 +61,13 @@ public class AuthController {
 			}
 			
 			 else {
-				httpSession.setAttribute(Const.USER_LOGGED, null);
-				return "login";
+				httpSession.setAttribute(Const.USER_LOGGED, null);           //chạy vào nếu sai mật khẩu trong database
+				rAttributes.addFlashAttribute("message", "Sai tên tài khoản hoặc mật khẩu");
+				return "redirect:/login";
 			}
-		} catch (Exception e) {
-			System.err.println("lỗi ko findid");
-			return "login";
+		} catch (Exception e) {												//chạy vào nếu sai tài khoản, vì ko tìm thấy
+			rAttributes.addFlashAttribute("message", "Sai tên tài khoản hoặc mật khẩu");
+			return "redirect:/login";
 		}
 		
 

@@ -6,6 +6,11 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import io.spring.entities.Account;
@@ -47,5 +52,16 @@ public class AccountServiceImpl implements AccountService {
 		return accountRepository.existsById(id);
 	}
 	
+	@Override
+	public Page<Account> findAll(Integer page, Integer limit, String field) {
+		if (field.equals("")) {
+			Pageable pageable = PageRequest.of(page, limit , Sort.by(Direction.ASC, "username"));
+			return accountRepository.findAll(pageable);
+		}
+		else {
+			Pageable pageable = PageRequest.of(page, limit , Sort.by(Direction.DESC, field));
+			return accountRepository.findAll(pageable);
+		}
+	}
 	
 }

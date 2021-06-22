@@ -2,6 +2,10 @@ package io.spring.controller;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -43,8 +47,9 @@ public class ProductController {
 	private ServletContext application;
 
 	@GetMapping("/products")
-	public String getAll(@RequestParam(value = "name", required = false) String name, Model model) {
-		model.addAttribute("list", productService.findAll());
+	public String getAll(Model model, @RequestParam(name = "field", defaultValue = "") String field,
+			@RequestParam(name = "page") Optional<Integer> page) {
+		model.addAttribute("list", productService.findAll(page.orElse(0), 4, field));
 		return "productsAdminList";
 	}
 
@@ -74,8 +79,7 @@ public class ProductController {
 	@PostMapping("/products/create")
 	public String saveProduct(@Validated @ModelAttribute("productForm") ProductModel productModel,
 			BindingResult bindingResult, @Parameter(name = "image") MultipartFile multipartFile, Model model)
-			throws IllegalAccessException, InvocationTargetException {
-		boolean check = bindingResult.hasErrors();
+			throws IllegalAccessException, InvocationTargetException, ParseException {
 		String path = application.getRealPath("/");
 		try {
 			String filePath = path + "/images/" + productModel.getImage().getOriginalFilename();
@@ -83,11 +87,8 @@ public class ProductController {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		if (!check) {
-			Product product = new Product();
-			BeanUtils.copyProperties(product, productModel);
-			product.setImage(productModel.getImage().getOriginalFilename());
-			productService.save(product);
+		if (!bindingResult.hasErrors()) {
+			productService.save(productModel);
 			model.addAttribute("message", "Save product is successfuly");
 			return "redirect:/admin/products";
 		} else {
@@ -98,16 +99,21 @@ public class ProductController {
 
 	@GetMapping("/products/edit/{id}")
 	public String editView(@PathVariable("id") Integer id, Model model) {
-		Optional<Product> product = productService.findById(id);
-		model.addAttribute("productForm", product);
-		model.addAttribute("idValue", product.get().getCategory().getId());
+		model.addAttribute("productForm", productService.findById(id));
+		model.addAttribute("idValue", productService.findById(id).get().getId());
+		try {
+			model.addAttribute("idCate", productService.findById(id).get().getCategory().getId());
+		} catch (Exception e) {
+			model.addAttribute("idCate", 25);
+		}
 		return "productsAdminEdit";
 	}
 
 	@PostMapping("/products/edit/{id}")
 	public String editAccount(@Validated @ModelAttribute("productForm") ProductModel productModel,
-			BindingResult bindingResult, @Parameter(name = "photo") MultipartFile photo, RedirectAttributes rAttributes,
-			Model model) throws IllegalAccessException, InvocationTargetException {
+			@Parameter(name = "category") Integer id, BindingResult bindingResult,
+			@Parameter(name = "photo") MultipartFile photo, RedirectAttributes rAttributes, Model model)
+			throws IllegalAccessException, InvocationTargetException, ParseException {
 		String path = application.getRealPath("/");
 		try {
 			String filePath = path + "/images/" + productModel.getImage().getOriginalFilename();
@@ -117,11 +123,15 @@ public class ProductController {
 		}
 
 		if (!bindingResult.hasErrors()) {
-			Product product = new Product();
-			BeanUtils.copyProperties(product, productModel);
-			product.setImage(productModel.getImage().getOriginalFilename());
 			rAttributes.addFlashAttribute("message",
 					"Edit Product is successfuly with username : " + productModel.getId());
+			Product product = new Product();
+			product.setId(id);
+			BeanUtils.copyProperties(product, productModel);
+			String localDate = LocalDate.now().toString();
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(localDate);
+			product.setCreateDate(date);
+			product.setImage(productModel.getImage().getOriginalFilename());
 			productService.save(product);
 			return "redirect:/admin/products";
 		} else {

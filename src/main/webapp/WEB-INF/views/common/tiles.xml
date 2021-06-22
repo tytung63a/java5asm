@@ -83,5 +83,10 @@
 		<put-attribute name="title" value="Homepage" />
 		<put-attribute name="body" value="/WEB-INF/views/products/list.jsp" />
 	</definition>
+	
+	<definition name="detailProduct" extends="base.definition.user">
+		<put-attribute name="title" value="Homepage" />
+		<put-attribute name="body" value="/WEB-INF/views/products/detail_product.jsp" />
+	</definition>
    
 </tiles-definitions>

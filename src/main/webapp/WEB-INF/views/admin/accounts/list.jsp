@@ -48,7 +48,7 @@
 							<i class="fas fa-sort-amount-down"></i>
 					</a></th>
 					<th><a
-						href="${pageContext.request.contextPath}/admin/accounts?field=activeted">ACTIVETED
+						href="${pageContext.request.contextPath}/admin/accounts?field=activated">ACTIVATED
 							<i class="fas fa-sort-amount-down"></i>
 					</a></th>
 					<th><a
@@ -60,7 +60,7 @@
 			</thead>
 
 			<tbody class="text-center">
-				<c:forEach var="account" items="${list}">
+				<c:forEach var="account" items="${list.content}">
 					<tr>
 						<td>${account.username}</td>
 						<td>${account.password}</td>
@@ -83,4 +83,39 @@
 			</tbody>
 
 		</table>
+		
 	</div>
+	
+	<div class="d-flex justify-content-center">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<c:if test="${list.number > 0}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/accounts/?page=0">First</a></li>
+				</c:if>
+
+
+				<c:if test="${list.number > 0}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/accounts/?page=${list.number - 1}">${list.number }</a></li>
+				</c:if>
+
+
+				<li class="page-item active" aria-current="page"><a
+					class="page-link" href="#">${list.number + 1}<span
+						class="visually-hidden">(current)</span></a></li>
+
+				<c:if test="${list.number <list.totalPages -1}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/accounts/?page=${list.number + 1}">${list.number +2}</a></li>
+				</c:if>
+
+
+				<c:if test="${list.number <list.totalPages -1}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/accounts/?page=${list.totalPages -1}">Last</a></li>
+				</c:if>
+
+			</ul>
+		</nav>
+		</div>

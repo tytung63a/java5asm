@@ -43,25 +43,16 @@
 					<span><form:errors path="price" cssClass="error" /></span>
 				</div>
 			
-				<div class="mt-3">
-					<label class="form-label">Date Create</label>
-					<form:input type="date" class="form-control" path="createDate" min="1997-01-01" max="2030-12-31" />
-					<span><form:errors path="createDate" cssClass="error" /></span>
-				</div>
 				
 				<div class="mt-3">
 					<label class="form-label">Available</label>
 					<form:select class="form-select" path="available" items="${listAvailable}"/>
 				</div>
 				
-				<%-- <div class="mt-3">
-					<label class="form-label">Category_ID</label>
-					<form:select class="form-select" path="category" items="${listCategory1}"/>
-				</div> --%>
 				
 				  <div class="mt-3">
 					<label class="form-label">Category_ID (Nhập Thủ Công))</label>
-					<input type="text" class="form-control" name="category" value="${idValue} " />
+					<input type="text" class="form-control" name="category" value="${idCate}" />
 					
 				</div> 
 				

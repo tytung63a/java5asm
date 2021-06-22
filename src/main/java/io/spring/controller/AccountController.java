@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,8 +47,9 @@ public class AccountController {
 	}
 
 	@GetMapping("")
-	public String getAll(Model model) {
-		model.addAttribute("list", accountService.findAll());
+	public String getAll(Model model, @RequestParam(name = "field", defaultValue = "") String field,
+			@RequestParam(name = "page") Optional<Integer> page) {
+		model.addAttribute("list", accountService.findAll(page.orElse(0), 4, field));
 		return "accountsAdminList";
 	}
 

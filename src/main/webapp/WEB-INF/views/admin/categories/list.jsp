@@ -88,7 +88,7 @@ thead {
 
 				<c:if test="${list.number > 0}">
 					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/admin/categories/?page=${list.number - 1}">Previous</a></li>
+						href="${pageContext.request.contextPath}/admin/categories/?page=${list.number - 1}">${list.number }</a></li>
 				</c:if>
 
 
@@ -98,7 +98,7 @@ thead {
 
 				<c:if test="${list.number <list.totalPages -1}">
 					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/admin/categories/?page=${list.number + 1}">Next</a></li>
+						href="${pageContext.request.contextPath}/admin/categories/?page=${list.number + 1}">${list.number +2}</a></li>
 				</c:if>
 
 

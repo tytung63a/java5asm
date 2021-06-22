@@ -50,6 +50,9 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <div class="form-group">
+                                           <p style="color:red;"> ${message}</p>
+                                        </div>
                                     </div>
                                     <form:form class="user" action="${pageContext.request.contextPath}/login" modelAttribute="account" method="POST">
                                         <div class="form-group">

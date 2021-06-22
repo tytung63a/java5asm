@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+
 import io.spring.entities.Account;
 
 public interface AccountService {
@@ -20,5 +22,7 @@ public interface AccountService {
 	boolean checkLogin(@Valid Account account);
 
 	boolean existsById(String id);
+
+	Page<Account> findAll(Integer page, Integer limit, String field);
 	
 }

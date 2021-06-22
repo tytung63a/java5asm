@@ -34,20 +34,44 @@
 		<table class="table table-hover">
 			<thead class="text-center">
 				<tr>
-					<th>ID</th>
-					<th>NAME</th>
-					<th>PRICE</th>
-					<th>QUANTITY</th>
-					<th>IMAGE</th>
-					<th>AVAILABLE</th>
-					<th>CATEGORY_ID</th>
-					<th>CREATE_DATE</th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=id">ID
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=name">NAME
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=price">PRICE
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=quantity">QUANTITY
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=image">IMAGE
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=available">AVAILABLE
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=category">CATEGORY_ID
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
+					<th><a
+						href="${pageContext.request.contextPath}/admin/products?field=createDate">CREATE_DATE
+							<i class="fas fa-sort-amount-down"></i>
+					</a></th>
 					<th>ACTION</th>
 				</tr>
 			</thead>
 
 			<tbody class="text-center">
-				<c:forEach var="product" items="${list}">
+				<c:forEach var="product" items="${list.content}">
 					<tr>
 						<td>${product.id}</td>
 						<td>${product.name}</td>
@@ -71,5 +95,40 @@
 
 		</table>
 	</div>
+	
+	<div class="d-flex justify-content-center">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<c:if test="${list.number > 0}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/products/?page=0">First</a></li>
+				</c:if>
+
+
+				<c:if test="${list.number > 0}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/products/?page=${list.number - 1}">${list.number }</a></li>
+				</c:if>
+
+
+				<li class="page-item active" aria-current="page"><a
+					class="page-link" href="#">${list.number + 1}<span
+						class="visually-hidden">(current)</span></a></li>
+
+				<c:if test="${list.number <list.totalPages -1}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/products/?page=${list.number + 1}">${list.number +2}</a></li>
+				</c:if>
+
+
+				<c:if test="${list.number <list.totalPages -1}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/admin/products/?page=${list.totalPages -1}">Last</a></li>
+				</c:if>
+
+			</ul>
+		</nav>
+	</div>
+	
 </body>
 </html>

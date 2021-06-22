@@ -33,9 +33,7 @@ public class ProductModel implements Serializable {
 	
 	private Integer available;
 
-	private Integer quantity;
-
-	private String createDate;
+	private Integer quantity;	
 
 	//bi-directional many-to-one association to Category
 	private Category category;
