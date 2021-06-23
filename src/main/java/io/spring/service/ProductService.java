@@ -19,7 +19,7 @@ public interface ProductService {
 
 	Optional<Product> findById(Integer id);
 
-	Page<Product> findAll(Integer page, Integer limit, String field);
+	Page<Product> findAll(Integer page, Integer limit, String field , String name);
 
 	Product save(ProductModel productModel ) throws IllegalAccessException, InvocationTargetException, ParseException;
 

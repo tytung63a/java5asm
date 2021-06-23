@@ -85,8 +85,13 @@
 	</definition>
 	
 	<definition name="detailProduct" extends="base.definition.user">
-		<put-attribute name="title" value="Homepage" />
+		<put-attribute name="title" value="Detail Product" />
 		<put-attribute name="body" value="/WEB-INF/views/products/detail_product.jsp" />
+	</definition>
+	
+	<definition name="shoppingCart" extends="base.definition.user">
+		<put-attribute name="title" value="Shopping Cart" />
+		<put-attribute name="body" value="/WEB-INF/views/products/cartView.jsp" />
 	</definition>
    
 </tiles-definitions>

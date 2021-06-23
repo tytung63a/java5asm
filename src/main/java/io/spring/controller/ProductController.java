@@ -49,7 +49,7 @@ public class ProductController {
 	@GetMapping("/products")
 	public String getAll(Model model, @RequestParam(name = "field", defaultValue = "") String field,
 			@RequestParam(name = "page") Optional<Integer> page) {
-		model.addAttribute("list", productService.findAll(page.orElse(0), 4, field));
+		model.addAttribute("list", productService.findAll(page.orElse(0), 4, field , ""));
 		return "productsAdminList";
 	}
 

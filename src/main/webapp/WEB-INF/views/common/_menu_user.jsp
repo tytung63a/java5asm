@@ -15,10 +15,10 @@
 					aria-current="page" href="/homepage">All Products</a></li>
 			</ul>
 			<form class="d-flex">
-				<button class="btn btn-outline-dark" type="submit">
+				<a class="btn btn-outline-dark" href="/shoppingcart/view">
 					<i class="bi-cart-fill me-1"></i> Cart <span
-						class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-				</button>
+						class="badge bg-dark text-white ms-1 rounded-pill">${count}</span>
+				</a>
 			</form>
 		</div>
 	</div>

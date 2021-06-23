@@ -17,6 +17,7 @@
     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/homepage?field=name">Tên</a></li>
     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/homepage?field=quantity">Số lượng</a></li>
   </ul>
+</div>
 <section class="py-5">
 	<div class="container px-4 px-lg-5 mt-5">
 		<div
@@ -47,6 +48,10 @@
 							<div class="text-center">
 								<a class="btn btn-outline-dark mt-auto" href="/products/${product.id}">View
 									options</a>
+							</div>
+							
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="/shoppingcart/add/${product.id}">Buy Now</a>
 							</div>
 						</div>
 					</div>

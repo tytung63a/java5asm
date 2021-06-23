@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import antlr.StringUtils;
 import io.spring.entities.Product;
 import io.spring.model.ProductModel;
 import io.spring.repository.ProductRepository;
@@ -46,8 +44,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Page<Product> findAll(Integer page, Integer limit, String field) {
-		if (field.equals("")) {
+	public Page<Product> findAll(Integer page, Integer limit, String field, String name) {
+		if (!name.isEmpty()) {
+			Pageable pageable = PageRequest.of(page, limit , Sort.by(Direction.ASC, "id"));
+			return productRepository.findByNameContaining(name, pageable);
+		}
+		else if (field.equals("")) {
 			Pageable pageable = PageRequest.of(page, limit , Sort.by(Direction.ASC, "id"));
 			return productRepository.findAll(pageable);
 		}
